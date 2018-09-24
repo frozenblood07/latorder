@@ -99,4 +99,35 @@ class OrderService
 
         return ResponseUtility::successResponse($distance);
     }
+
+
+    /**
+     * @param $orderId
+     * @param $status
+     * @return array
+     */
+    public function updateOrderStatus($orderId, $status) : array
+    {
+        //validate
+        $respValidator = $this->orderValidator->validateUpdateOrderStatusParameters(array(Constant::ID => $orderId, Constant::STATUS => $status));
+
+        if(!$respValidator['status']) {
+            return $respValidator;
+        }
+
+        //get order
+        $order = $this->orderRepository->find($orderId);
+
+        if($order->getStatus() === Constant::TAKEN_STATUS) {
+            return ResponseUtility::failureResponse('ORDER_ALREADY_BEEN_TAKEN');
+        }
+
+        //update order
+        $order->setStatus($status);
+
+        $this->orderRepository->save($order);
+
+        //return order;
+        return ResponseUtility::successResponse(['status' => 'success']);
+    }
 }

@@ -62,4 +62,21 @@ class OrderValidator
         }
         return true;
     }
+
+    /**
+     * @param $parameters
+     * @return array
+     */
+    public function validateUpdateOrderStatusParameters($parameters) : array
+    {
+        if(!in_array($parameters['status'], Constant::ALLOWED_ORDER_STATUS)) {
+            return ResponseUtility::failureResponse('Invalid Status');
+        }
+
+        if (!filter_var($parameters['id'], FILTER_VALIDATE_INT)) {
+            return ResponseUtility::failureResponse('Incorrect type for Order Id');
+        }
+
+        return ResponseUtility::successResponse();
+    }
 }

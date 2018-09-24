@@ -65,12 +65,13 @@ class OrderController extends AbstractController
 
     /**
      * @param $response
+     * @param $errorCode
      * @return int
      */
-    private function getStatusCode($response) : int
+    private function getStatusCode($response, $errorCode) : int
     {
         if(!$response['status']) {
-            $statusCode = JsonResponse::HTTP_INTERNAL_SERVER_ERROR;
+            $statusCode = $errorCode;
         } else {
             $statusCode = JsonResponse::HTTP_OK;
         }
@@ -121,7 +122,7 @@ class OrderController extends AbstractController
 
 
 
-        return new JsonResponse($this->getResponseContent($response), $this->getStatusCode($response));
+        return new JsonResponse($this->getResponseContent($response), $this->getStatusCode($response, JsonResponse::HTTP_INTERNAL_SERVER_ERROR));
     }
 
     /*
@@ -142,8 +143,15 @@ class OrderController extends AbstractController
      */
     public function update(Request $request, $id) : JsonResponse
     {
-        var_dump($id);
-        var_dump(json_decode($request->getContent(),true));die();
-        return new JsonResponse(['status' => 'success'], JsonResponse::HTTP_OK);
+        $respReqCheck = $this->checkRequestBodyContent($request);
+
+        if(!$respReqCheck['status']) {
+            $response = $respReqCheck;
+        }else {
+            $parameters = $this->getRequestContent($request);
+            $response = $this->orderService->updateOrderStatus($id, $parameters['status']);
+        }
+
+        return new JsonResponse($this->getResponseContent($response), $this->getStatusCode($response, JsonResponse::HTTP_CONFLICT));
     }
 }

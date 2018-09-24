@@ -17,4 +17,6 @@ class Constant
     const DISTANCE = 'distance';
     const ID = 'id';
     const STATUS = 'status';
+    const ALLOWED_ORDER_STATUS = ['taken'];
+    const TAKEN_STATUS = 'taken';
 }
