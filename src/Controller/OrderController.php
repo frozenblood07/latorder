@@ -86,10 +86,7 @@ class OrderController extends AbstractController
         return $response;
     }
 
-    /*
-     *  - Method: `GET`
-  - Url path: `/orders?page=:page&limit=:limit`
-     */
+
     /**
      * @Route("/orders", name="orderList", methods="GET")
      * @param Request $request
@@ -97,9 +94,12 @@ class OrderController extends AbstractController
      */
     public function index(Request $request) : JsonResponse
     {
-        var_dump($request->query->get('limit'));
-        var_dump($request->query->get('page'));die();
-        return new JsonResponse(['status' => 'success'], JsonResponse::HTTP_OK);
+        $limit = $request->query->get('limit');
+        $page = $request->query->get('page');
+
+        $response = $this->orderService->getOrderList($page,$limit);
+
+        return new JsonResponse($this->getResponseContent($response), $this->getStatusCode($response, JsonResponse::HTTP_OK));
     }
 
 
@@ -125,16 +125,7 @@ class OrderController extends AbstractController
         return new JsonResponse($this->getResponseContent($response), $this->getStatusCode($response, JsonResponse::HTTP_INTERNAL_SERVER_ERROR));
     }
 
-    /*
-     * - Method: `PUT`
-  - URL path: `/order/:id`
-  - Request body:
-    ```
-    {
-        "status":"taken"
-    }
-    ```
-     */
+
     /**
      * @Route("/order/{id}", name="orderUpdate", methods="PUT")
      * @param Request $request

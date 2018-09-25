@@ -130,4 +130,22 @@ class OrderService
         //return order;
         return ResponseUtility::successResponse(['status' => 'success']);
     }
+
+    public function getOrderList($page,$limit) : array
+    {
+        $offset = ($page-1)*$limit;
+        $orderList = $this->orderRepository->findBy([],[],$limit,$offset);
+
+        $orderData = array();
+
+        foreach ($orderList as $order) {
+            array_push($orderData, array(
+                                                Constant::ID=>$order->getId(),
+                                                Constant::DISTANCE => $order->getDistance(),
+                                                Constant::STATUS => $order->getStatus())
+                                                );
+        }
+
+        return ResponseUtility::successResponse($orderData);
+    }
 }
