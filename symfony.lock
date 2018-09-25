@@ -80,6 +80,9 @@
     "nikic/php-parser": {
         "version": "v4.0.4"
     },
+    "php-curl-class/php-curl-class": {
+        "version": "8.3.2"
+    },
     "phpdocumentor/reflection-common": {
         "version": "1.0.1"
     },

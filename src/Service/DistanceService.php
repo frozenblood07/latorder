@@ -9,16 +9,35 @@
 namespace App\Service;
 
 
+use App\Library\DistanceProviderFactory;
+
 class DistanceService
 {
+    /**
+     * @var DistanceProviderFactory
+     */
+    private $distanceProviderFactory;
+
+    /**
+     * DistanceService constructor.
+     * @param DistanceProviderFactory $distanceProviderFactory
+     */
+    public function __construct(DistanceProviderFactory $distanceProviderFactory)
+    {
+        $this->distanceProviderFactory = $distanceProviderFactory;
+    }
+
     /**
      * @param $from
      * @param $to
      * @param string $provider
      * @return float
+     * @throws \Exception
      */
     public function getDistanceBetweenCoordinates($from, $to,$provider = 'google') : float
     {
-        return 10;
+        $distanceObj = $this->distanceProviderFactory->getDistanceProviderObject($from,$to,$provider);
+
+        return $distanceObj->getDistance();
     }
 }
