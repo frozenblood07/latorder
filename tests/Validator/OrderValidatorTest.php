@@ -82,4 +82,36 @@ class OrderValidatorTest extends TestCase
 
         $this->assertEquals($expectedResult, $result);
     }
+
+    public function validateListOrderParametersDataProvider()
+    {
+        return array(
+          array(
+            array(
+                'page' => '1a',
+                'limit' => '1a',
+            ), ResponseUtility::failureResponse('Incorrect type page or limit')
+          ),
+          array(
+            array(
+                'page' => '1',
+                'limit' => '1',
+            ), ResponseUtility::successResponse()
+          )
+        );
+    }
+
+    /**
+     * @param $data
+     * @param $expectedResult
+     * @dataProvider validateListOrderParametersDataProvider
+     */
+    public function testValidateListOrderParameters($data, $expectedResult)
+    {
+        $orderValidator = new OrderValidator();
+
+        $result = $orderValidator->validateListOrderParameters($data);
+
+        $this->assertEquals($expectedResult, $result);
+    }
 }
