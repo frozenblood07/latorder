@@ -1,6 +1,6 @@
 Latorder
 -------------
-Latorder is a basic Restful API routes using PHP.
+Latorder is a basic Restful API using PHP.
 
 ## Run
 
