@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: karan
- * Date: 24/9/18
- * Time: 2:03 PM
- */
 
 namespace App\Validator;
 
@@ -14,13 +8,6 @@ use App\Utility\ResponseUtility;
 
 class OrderValidator
 {
-    /*
-     * ```
-    {
-        "Constant::ORIGIN": ["START_LATITUDE", "START_LONGTITUDE"],
-        "Constant::DESTINATION": ["END_LATITUDE", "END_LONGTITUDE"]
-    }
-     */
     /**
      * @param $parameters
      * @return array
@@ -69,12 +56,25 @@ class OrderValidator
      */
     public function validateUpdateOrderStatusParameters($parameters) : array
     {
-        if(!in_array($parameters['status'], Constant::ALLOWED_ORDER_STATUS)) {
+        if(!in_array($parameters[Constant::STATUS], Constant::ALLOWED_ORDER_STATUS)) {
             return ResponseUtility::failureResponse('Invalid Status');
         }
 
-        if (!filter_var($parameters['id'], FILTER_VALIDATE_INT)) {
+        if (!filter_var($parameters[Constant::ID], FILTER_VALIDATE_INT)) {
             return ResponseUtility::failureResponse('Incorrect type for Order Id');
+        }
+
+        return ResponseUtility::successResponse();
+    }
+
+    /**
+     * @param $parameters
+     * @return array
+     */
+    public function validateListOrderParameters($parameters) : array
+    {
+        if (!filter_var($parameters[Constant::PAGE], FILTER_VALIDATE_INT) || !filter_var($parameters[Constant::LIMIT], FILTER_VALIDATE_INT)) {
+            return ResponseUtility::failureResponse('Incorrect type page or limit');
         }
 
         return ResponseUtility::successResponse();

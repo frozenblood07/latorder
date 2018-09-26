@@ -135,8 +135,22 @@ class OrderService
         return ResponseUtility::successResponse(['status' => 'success']);
     }
 
+    /**
+     * @param $page
+     * @param $limit
+     * @return array
+     */
     public function getOrderList($page,$limit) : array
     {
+        $page = empty($page) ? 1 : $page;
+        $limit = empty($limit) ? 10 : $limit;
+
+        $respValidator = $this->orderValidator->validateListOrderParameters(array(Constant::PAGE => $page,Constant::LIMIT => $limit));
+
+        if(!$respValidator['status']) {
+            return $respValidator;
+        }
+
         $offset = ($page-1)*$limit;
         $orderList = $this->orderRepository->findBy([],[],$limit,$offset);
 

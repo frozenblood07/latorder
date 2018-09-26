@@ -19,4 +19,6 @@ class Constant
     const STATUS = 'status';
     const ALLOWED_ORDER_STATUS = ['taken'];
     const TAKEN_STATUS = 'taken';
+    const PAGE = 'page';
+    const LIMIT = 'limit';
 }
