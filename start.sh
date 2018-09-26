@@ -3,7 +3,7 @@ mkdir logs
 
 chmod -R 777 logs/.
 
-#cp env_files/env_development ./env
+cp env_files/.env ./env
 
 docker-compose down
 
