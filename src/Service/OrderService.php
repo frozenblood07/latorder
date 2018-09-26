@@ -118,6 +118,10 @@ class OrderService
         //get order
         $order = $this->orderRepository->find($orderId);
 
+        if($order == null) {
+            return ResponseUtility::failureResponse("Invalid Order ID");
+        }
+
         if($order->getStatus() === Constant::TAKEN_STATUS) {
             return ResponseUtility::failureResponse('ORDER_ALREADY_BEEN_TAKEN');
         }
